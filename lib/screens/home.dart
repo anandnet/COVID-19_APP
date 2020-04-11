@@ -1,9 +1,10 @@
-import './aboutScreen.dart';
-import './inScreen.dart';
-import './worldScreen.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:html/parser.dart' show parse;
+import './aboutScreen.dart';
+import './inScreen.dart';
+import './worldScreen.dart';
+import '../screens/posterScreen.dart';
 
 class HomePage extends StatefulWidget {
   @override
@@ -11,6 +12,7 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  bool networkError=false;
   bool spinner = true;
   String totalCases = "";
   String totalDeaths = "";
@@ -19,8 +21,9 @@ class _HomePageState extends State<HomePage> {
   getdata() async {
     setState(() {
       spinner = true;
+      networkError=false;
     });
-
+    try{
     var url = 'https://www.worldometers.info/coronavirus/';
     var response = await http.get(url);
     //print('Response status: ${response.statusCode}');
@@ -44,6 +47,12 @@ class _HomePageState extends State<HomePage> {
             .firstChild
             .text;
         spinner = false;
+      });
+    }
+    }
+    catch(e){
+      setState(() {
+        networkError=true;
       });
     }
   }
@@ -82,71 +91,76 @@ class _HomePageState extends State<HomePage> {
             Container(
               width: screenSize.width * .9,
               height: screenSize.height * .35,
-              child: Card(
-                  elevation: 20,
-                  color: Color.fromRGBO(57, 57, 59, 0.9),
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(20)),
-                  child: spinner
-                      ? Center(child: CircularProgressIndicator())
-                      : Column(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          children: <Widget>[
-                            Column(
-                              children: <Widget>[
-                                Text(
-                                  "Infected",
-                                  style: TextStyle(
-                                      color: Colors.white,
-                                      fontSize: 35,
-                                      fontWeight: FontWeight.bold),
-                                ),
-                                Text(
-                                  totalCases.trim(),
-                                  style: TextStyle(
-                                      fontSize: 40, color: Colors.lightBlue),
-                                )
-                              ],
-                            ),
-                            Row(
+              child: Stack(
+                children: <Widget>[
+                  Card(
+                      elevation: 20,
+                      color: Color.fromRGBO(57, 57, 59, 0.9),
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(20)),
+                      child: networkError?Center(child: Text("No Internet Connection !!",style: TextStyle(color:Colors.white),),):spinner
+                          ? Center(child: CircularProgressIndicator())
+                          : Column(
                               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                               children: <Widget>[
                                 Column(
                                   children: <Widget>[
                                     Text(
-                                      "Deaths",
+                                      "Infected",
                                       style: TextStyle(
                                           color: Colors.white,
-                                          fontSize: 25,
+                                          fontSize: 35,
                                           fontWeight: FontWeight.bold),
                                     ),
                                     Text(
-                                      totalDeaths,
+                                      totalCases.trim(),
                                       style: TextStyle(
-                                          fontSize: 30, color: Colors.red),
+                                          fontSize: 40, color: Colors.lightBlue),
                                     )
                                   ],
                                 ),
-                                Column(
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                                   children: <Widget>[
-                                    Text(
-                                      "Recovered",
-                                      style: TextStyle(
-                                          color: Colors.white,
-                                          fontSize: 25,
-                                          fontWeight: FontWeight.bold),
+                                    Column(
+                                      children: <Widget>[
+                                        Text(
+                                          "Deaths",
+                                          style: TextStyle(
+                                              color: Colors.white,
+                                              fontSize: 25,
+                                              fontWeight: FontWeight.bold),
+                                        ),
+                                        Text(
+                                          totalDeaths,
+                                          style: TextStyle(
+                                              fontSize: 30, color: Colors.red),
+                                        )
+                                      ],
                                     ),
-                                    Text(
-                                      totalRecovered,
-                                      style: TextStyle(
-                                          fontSize: 30, color: Colors.green),
-                                    )
+                                    Column(
+                                      children: <Widget>[
+                                        Text(
+                                          "Recovered",
+                                          style: TextStyle(
+                                              color: Colors.white,
+                                              fontSize: 25,
+                                              fontWeight: FontWeight.bold),
+                                        ),
+                                        Text(
+                                          totalRecovered,
+                                          style: TextStyle(
+                                              fontSize: 30, color: Colors.green),
+                                        )
+                                      ],
+                                    ),
                                   ],
-                                ),
+                                )
                               ],
-                            )
-                          ],
-                        )),
+                            )),
+                          Container(alignment: Alignment.topRight,child:FlatButton(child: Text("Refresh",style:TextStyle(color:Colors.white)), onPressed: (){getdata();}))
+                ],
+              ),
             ),
             Flexible(
                 child: GridView.count(
@@ -162,7 +176,8 @@ class _HomePageState extends State<HomePage> {
                 }));
                 }),
                 _gridItem(context, "assets/poster.jpg","Posters",(){
-                  
+                  Navigator.push(context, MaterialPageRoute(builder: (context){
+                    return PostersScreen();}));
                 }),
                 _gridItem(context, "assets/india.jpg","India",(){
                   Navigator.push(context, MaterialPageRoute(builder: (context){
@@ -177,6 +192,12 @@ class _HomePageState extends State<HomePage> {
             ))
           ]),
         ),
+        SafeArea(
+          child: Column(children: [
+            Container(
+                margin: const EdgeInsets.all(20),
+                alignment: Alignment.topRight,
+                child:IconButton(icon: Icon(Icons.info_outline,color:Colors.white,size:30), onPressed:null) ),]))
       ],
     ));
   }

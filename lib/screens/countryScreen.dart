@@ -186,6 +186,9 @@ class Country extends StatelessWidget {
                                                             "Curaçao")
                                                         ? "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b1/Flag_of_Cura%C3%A7ao.svg/250px-Flag_of_Cura%C3%A7ao.svg.png"
                                                         : (cases.countryName ==
+                                                                "World")
+                                                            ?"https://upload.wikimedia.org/wikipedia/commons/thumb/3/3b/COVID-19_Outbreak_World_Map_per_Capita.svg/330px-COVID-19_Outbreak_World_Map_per_Capita.svg.png"
+                                                        : (cases.countryName ==
                                                                 "Sint Maarten")
                                                             ? "https://upload.wikimedia.org/wikipedia/commons/thumb/d/d3/Flag_of_Sint_Maarten.svg/250px-Flag_of_Sint_Maarten.svg.png"
                                                             : (cases.countryName ==

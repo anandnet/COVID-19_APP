@@ -10,22 +10,27 @@ class IndiaCases extends StatefulWidget {
 
 class _IndiaCasesState extends State<IndiaCases> {
   bool spinner = true;
+  bool error=false;
   List<StateCases> stateCasesList = [];
-  getdata() async {
+
+
+ void getdata() async {
+
+    List<StateCases> temp = [];
     setState(() {
       spinner = true;
+      error=false;
     });
 
     var url = 'https://www.mohfw.gov.in/';
+    try{
     var response = await http.get(url);
-    print('Response status: ${response.statusCode}');
     if (response.statusCode == 200) {
       var document = parse(response.body);
       List<dom.Element> table = document
-          .getElementById("cases")
-          .children[1]
-          .children[1].children[0].children[1].children;
-      List<StateCases> temp = [];
+          .getElementsByClassName("data-table table-responsive")[0]
+          .children[0]
+          .children[1].children;
       table.removeLast();
       table.removeLast();
       print(table.length);
@@ -40,11 +45,21 @@ class _IndiaCasesState extends State<IndiaCases> {
       });
       temp.sort((a,b)=>int.tryParse(b.totalCases.replaceAll(",", "")).compareTo(int.tryParse(a.totalCases.replaceAll(",", ""))));
       print(temp[1].stateName);
-      setState(() {
-        stateCasesList = temp.toList();
+      
+    }
+    }
+      catch(e){
+        error=true;
+        print(e);
+      }
+      if(mounted){
+    setState(() {
+        if(!error){
+          stateCasesList = temp.toList();
+        }
         spinner = false;
       });
-    }
+      }
   }
 
   @override
@@ -103,7 +118,8 @@ class _IndiaCasesState extends State<IndiaCases> {
                   ),
                 ),
                 Flexible(
-                  child: spinner?Center(child: CircularProgressIndicator(),):ListView.builder(
+                  child: (error)?Center(
+                    child: Text("No Internet Connection!!",style: TextStyle(color:Colors.white),),):spinner?Center(child: CircularProgressIndicator(),):ListView.builder(
                     padding: const EdgeInsets.only(top:8),
                     itemCount: stateCasesList.length,
                     itemBuilder: (context,index)=>

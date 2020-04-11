@@ -45,7 +45,7 @@ class _AboutState extends State<About> {
                     child: Column(children: <Widget>[
                       Container(
                         alignment: Alignment.topRight,
-                        child:FlatButton(child: Text(isHindi?"English":"हिन्दी",style: TextStyle(fontWeight:FontWeight.bold),),onPressed: (){
+                        child:FlatButton(child: Text(isHindi?"English":"हिन्दी",style: TextStyle(fontWeight:FontWeight.bold,color: Colors.white),),onPressed: (){
                           setState(() {
                             isHindi=!isHindi;
                           });

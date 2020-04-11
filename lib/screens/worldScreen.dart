@@ -12,42 +12,59 @@ class WorldScreen extends StatefulWidget {
 
 class _WorldScreenState extends State<WorldScreen> {
   bool spinner = true;
+  bool error = false;
   List<CountryCases> countryCasesList = [];
   getdata() async {
+    List<CountryCases> temp = [];
     setState(() {
       spinner = true;
+      error = false;
     });
 
-    var url = 'https://www.worldometers.info/coronavirus/';
-    var response = await http.get(url);
-    print('Response status: ${response.statusCode}');
-    if (response.statusCode == 200) {
-      var document = parse(response.body);
-      List<dom.Element> table = document
-          .getElementById("main_table_countries_today")
-          .children[1]
-          .children;
-      List<CountryCases> temp = [];
-      table.forEach((tr) {
-        var children = tr.children;
-        temp.add(CountryCases(
-            countryName: children[0].text,
-            totalCases: children[1].text.trim(),
-            newCases: children[2].text.trim(),
-            totalDeaths: children[3].text.trim(),
-            newDeaths: children[4].text.trim(),
-            totalRecovered: children[5].text.trim(),
-            activeCases: children[6].text.trim(),
-            seriousCases: children[7].text.trim()));
-      });
-      temp.sort((a, b) => int.tryParse(b.totalCases.replaceAll(",", ""))
-          .compareTo(int.tryParse(a.totalCases.replaceAll(",", ""))));
-      print(temp[1].countryName);
-      setState(() {
+    try {
+      var url = 'https://www.worldometers.info/coronavirus/';
+      var response = await http.get(url);
+      print('Response status: ${response.statusCode}');
+      if (response.statusCode == 200) {
+        var document = parse(response.body);
+        List<dom.Element> table = document
+            .getElementById("main_table_countries_today")
+            .children[1]
+            .children;
+        table.forEach((tr) {
+          var children = tr.children;
+          if (!(children[0].text.trim() == "South America" ||
+              children[0].text.trim() == "North America" ||
+              children[0].text.trim() == "Asia" ||
+              children[0].text.trim() == "Europe"||
+              children[0].text.trim() == "Africa")){
+            temp.add(CountryCases(
+                countryName: children[0].text,
+                totalCases: children[1].text.trim(),
+                newCases: children[2].text.trim(),
+                totalDeaths: children[3].text.trim(),
+                newDeaths: children[4].text.trim(),
+                totalRecovered: children[5].text.trim(),
+                activeCases: children[6].text.trim(),
+                seriousCases: children[7].text.trim()));
+              }
+              else{
+                print("yess");
+              }
+        });
+        temp.sort((a, b) => int.tryParse(b.totalCases.replaceAll(",", ""))
+            .compareTo(int.tryParse(a.totalCases.replaceAll(",", ""))));
+        print(temp[1].countryName);
+      }
+    } catch (e) {
+      error = true;
+    }
+    setState(() {
+      if (!error) {
         countryCasesList = temp.toList();
         spinner = false;
-      });
-    }
+      }
+    });
   }
 
   @override
@@ -114,62 +131,79 @@ class _WorldScreenState extends State<WorldScreen> {
                     ),
                   ),
                   Container(
-                    child: spinner
+                    child: error
                         ? Container(
                             color: Color.fromRGBO(57, 57, 59, 0.9),
-                            child: Center(child: CircularProgressIndicator()))
-                        : ListView.builder(
-                            padding: EdgeInsets.only(),
-                            itemCount: countryCasesList.length,
-                            itemBuilder: (context, index) {
-                              return Material(
+                            child: Center(
+                              child: Text(
+                                "No Internet Connection !!",
+                                style: TextStyle(color: Colors.white),
+                              ),
+                            ))
+                        : spinner
+                            ? Container(
                                 color: Color.fromRGBO(57, 57, 59, 0.9),
-                                child: InkWell(
-                                  onTap: () {
-                                    Navigator.of(context).push(
-                                        MaterialPageRoute(builder: (context) {
-                                      return Country(countryCasesList[index]);
-                                    }));
-                                  },
-                                  hoverColor: Colors.white,
-                                  child: Container(
-                                    height: 60,
-                                    child: Row(
-                                      children: <Widget>[
-                                        Container(
-                                          padding:
-                                              const EdgeInsets.only(left: 15),
-                                          width: screenSize.width * .55,
-                                          child: Text(
-                                            countryCasesList[index].countryName,
-                                            style: TextStyle(
-                                                fontSize: 20,
-                                                color: Colors.white),
-                                          ),
-                                        ),
-                                        Container(
-                                          padding: const EdgeInsets.only(left:10),
-                                          width: screenSize.width * .25,
-                                          child: Text(
-                                            countryCasesList[index].totalCases,
-                                            style:
-                                                TextStyle(color: Colors.white),
-                                          ),
-                                        ),
-                                        Container(
-                                          width: screenSize.width * .20,
-                                          child: Center(
+                                child:
+                                    Center(child: CircularProgressIndicator()))
+                            : ListView.builder(
+                                padding: EdgeInsets.only(),
+                                itemCount: countryCasesList.length,
+                                itemBuilder: (context, index) {
+                                  return Material(
+                                    color: Color.fromRGBO(57, 57, 59, 0.9),
+                                    child: InkWell(
+                                      onTap: () {
+                                        Navigator.of(context).push(
+                                            MaterialPageRoute(
+                                                builder: (context) {
+                                          return Country(
+                                              countryCasesList[index]);
+                                        }));
+                                      },
+                                      hoverColor: Colors.white,
+                                      child: Container(
+                                        height: 60,
+                                        child: Row(
+                                          children: <Widget>[
+                                            Container(
+                                              padding: const EdgeInsets.only(
+                                                  left: 15),
+                                              width: screenSize.width * .55,
                                               child: Text(
-                                            countryCasesList[index].totalDeaths,
-                                            style: TextStyle(color: Colors.red),
-                                          )),
-                                        )
-                                      ],
+                                                countryCasesList[index]
+                                                    .countryName,
+                                                style: TextStyle(
+                                                    fontSize: 20,
+                                                    color: Colors.white),
+                                              ),
+                                            ),
+                                            Container(
+                                              padding: const EdgeInsets.only(
+                                                  left: 10),
+                                              width: screenSize.width * .25,
+                                              child: Text(
+                                                countryCasesList[index]
+                                                    .totalCases,
+                                                style: TextStyle(
+                                                    color: Colors.white),
+                                              ),
+                                            ),
+                                            Container(
+                                              width: screenSize.width * .20,
+                                              child: Center(
+                                                  child: Text(
+                                                countryCasesList[index]
+                                                    .totalDeaths,
+                                                style: TextStyle(
+                                                    color: Colors.red),
+                                              )),
+                                            )
+                                          ],
+                                        ),
+                                      ),
                                     ),
-                                  ),
-                                ),
-                              );
-                            }),
+                                  );
+                                }),
                   ),
                 ],
               ),
