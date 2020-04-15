@@ -200,8 +200,8 @@ class _HomePageState extends State<HomePage> {
                     title:Text("About"),
                     content: RichText(text: TextSpan(
                       children:[
-                        TextSpan(text:"This is a temprory app for tracking the current status of disease Covid-19 of India and World.",style: TextStyle(color:Colors.black) )
-                        ,TextSpan(text:"\nWeb scraping is used to build this app.So,May be this app doesn't work when content of source website is changed.",style: TextStyle(color:Colors.black)),
+                        TextSpan(text:"This is a temporary app for tracking the current status of disease Covid-19 of India and World.",style: TextStyle(color:Colors.black) )
+                        ,TextSpan(text:"\nWeb scraping is used to build this app.So,May be this app won't work when content of source-website will be changed.",style: TextStyle(color:Colors.black)),
                         TextSpan(text:"\n\nSource Of Data:",style: TextStyle(color:Colors.black,fontWeight: FontWeight.bold)),
                         TextSpan(text:"\n\n   World:",style: TextStyle(color:Colors.black,fontWeight: FontWeight.bold)),
                         TextSpan(text:" worldometers.info/coronavirus",style: TextStyle(color:Colors.black)),
@@ -211,7 +211,7 @@ class _HomePageState extends State<HomePage> {
                         TextSpan(text:" who.int",style: TextStyle(color:Colors.black)),
                         TextSpan(text:"\n   Graph:",style: TextStyle(color:Colors.black,fontWeight: FontWeight.bold)),
                         TextSpan(text:" Wikipedia",style: TextStyle(color:Colors.black)),
-                        TextSpan(text:"\n\n**If this app is showing \"No Internet Connection\" despite of having connection in your phone,Then this app will be useless,Uninstall it",style: TextStyle(color:Colors.black,fontWeight: FontWeight.bold)),
+                        TextSpan(text:"\n\n**If this app is showing \"No Internet Connection\" despite of having connection in your phone,Then this app become useless,Uninstall it",style: TextStyle(color:Colors.black,fontWeight: FontWeight.bold)),
                       ]
                     ))
               /* Text("""This is a temprory app for tracking the current status of disease Covid-19 in India and World.\n\n* This app has been built using web scraping.\n\nThe following source is Used:
