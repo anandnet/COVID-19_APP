@@ -54,7 +54,7 @@ flutter:
    - assets/world_map.jpg
    - assets/loader.gif
    - assets/loader1.gif
-   - assets/poster.jpg
+   - assets/graph.jpg
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.

@@ -2,7 +2,6 @@ import 'package:COVID_19/widgets/imageviewer.dart';
 import "package:flutter/material.dart";
 import 'package:http/http.dart' as http;
 import 'package:html/parser.dart' show parse;
-import 'package:html/dom.dart' as dom;
 
 class PostersScreen extends StatefulWidget {
   @override
@@ -11,8 +10,12 @@ class PostersScreen extends StatefulWidget {
 
 class _PostersScreenState extends State<PostersScreen> {
   bool spinner = true;
-  String imgSource = "";
-  String imgSource1 = "";
+  String testedSample = "";
+  String newtest = "";
+  String cumulative="";
+  String  newcasesperday="";
+  String recoveriesperday="";
+  String newdeathsperday="";
   void getData() async {
     setState(() {
       spinner = true;
@@ -23,16 +26,24 @@ class _PostersScreenState extends State<PostersScreen> {
     if (response.statusCode == 200) {
       var document = parse(response.body);
       setState(() {
-        imgSource = document
-            .getElementsByClassName("mw-graph")[0]
-            .children[0]
+        testedSample = document
+            .getElementsByClassName("mw-graph-img")[0]
             .attributes['src'];
-        print(imgSource);
-        imgSource1 = document
-            .getElementsByClassName("mw-graph")[1]
-            .children[0]
+        newtest = document
+            .getElementsByClassName("mw-graph-img")[1]
             .attributes['src'];
-        print(imgSource1);
+        cumulative =document
+            .getElementsByClassName("mw-graph-img")[2]
+            .attributes['src'];
+        newcasesperday =document
+            .getElementsByClassName("mw-graph-img")[3]
+            .attributes['src'];
+        recoveriesperday =document
+            .getElementsByClassName("mw-graph-img")[4]
+            .attributes['src'];
+        newdeathsperday =document
+            .getElementsByClassName("mw-graph-img")[5]
+            .attributes['src'];
         spinner = false;
       });
     }
@@ -87,8 +98,12 @@ class _PostersScreenState extends State<PostersScreen> {
                               backgroundColor: Colors.white24),
                         ),
                       ),
-                      spinner?Center(child: CircularProgressIndicator(),):_listItem("New cases per day", "https://en.wikipedia.org"+imgSource1),
-                      spinner?Center(child: CircularProgressIndicator(),):_listItem("Deaths", "https://en.wikipedia.org"+imgSource),
+                      spinner?Center(child: CircularProgressIndicator(),):_listItem("Cumulative Graph", "https://en.wikipedia.org"+cumulative),
+                      spinner?Center(child: CircularProgressIndicator(),):_listItem("New cases per day", "https://en.wikipedia.org"+newcasesperday),
+                      spinner?Center(child: CircularProgressIndicator(),):_listItem("Deaths", "https://en.wikipedia.org"+newdeathsperday),
+                      spinner?Center(child: CircularProgressIndicator(),):_listItem("Recoveries per day", "https://en.wikipedia.org"+recoveriesperday),
+                      spinner?Center(child: CircularProgressIndicator(),):_listItem("new test per day", "https://en.wikipedia.org"+newtest),
+                      spinner?Center(child: CircularProgressIndicator(),):_listItem("Tested sample per day", "https://en.wikipedia.org"+testedSample),
                       Container(
                         margin: EdgeInsets.only(top: 30),
                         padding: EdgeInsets.only(left: 20),

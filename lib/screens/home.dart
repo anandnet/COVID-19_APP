@@ -26,8 +26,6 @@ class _HomePageState extends State<HomePage> {
     try{
     var url = 'https://www.worldometers.info/coronavirus/';
     var response = await http.get(url);
-    //print('Response status: ${response.statusCode}');
-    //print('Response body: ${response.body}');
     if (response.statusCode == 200) {
       var document = parse(response.body);
       setState(() {
@@ -175,7 +173,7 @@ class _HomePageState extends State<HomePage> {
                     return About();
                 }));
                 }),
-                _gridItem(context, "assets/poster.jpg","Posters",(){
+                _gridItem(context, "assets/graph.jpg","Graphs",(){
                   Navigator.push(context, MaterialPageRoute(builder: (context){
                     return PostersScreen();}));
                 }),
@@ -197,7 +195,31 @@ class _HomePageState extends State<HomePage> {
             Container(
                 margin: const EdgeInsets.all(20),
                 alignment: Alignment.topRight,
-                child:IconButton(icon: Icon(Icons.info_outline,color:Colors.white,size:30), onPressed:null) ),]))
+                child:IconButton(icon: Icon(Icons.info_outline,color:Colors.white,size:30), onPressed:(){
+                  showDialog(context: context,child: AlertDialog(
+                    title:Text("About"),
+                    content: RichText(text: TextSpan(
+                      children:[
+                        TextSpan(text:"This is a temprory app for tracking the current status of disease Covid-19 of India and World.",style: TextStyle(color:Colors.black) )
+                        ,TextSpan(text:"\nWeb scraping is used to build this app.So,May be this app doesn't work when content of source website is changed.",style: TextStyle(color:Colors.black)),
+                        TextSpan(text:"\n\nSource Of Data:",style: TextStyle(color:Colors.black,fontWeight: FontWeight.bold)),
+                        TextSpan(text:"\n\n   World:",style: TextStyle(color:Colors.black,fontWeight: FontWeight.bold)),
+                        TextSpan(text:" worldometers.info/coronavirus",style: TextStyle(color:Colors.black)),
+                        TextSpan(text:"\n   India:",style: TextStyle(color:Colors.black,fontWeight: FontWeight.bold)),
+                        TextSpan(text:" mohfw.gov.in",style: TextStyle(color:Colors.black)),
+                        TextSpan(text:"\n   Info:",style: TextStyle(color:Colors.black,fontWeight: FontWeight.bold)),
+                        TextSpan(text:" who.int",style: TextStyle(color:Colors.black)),
+                        TextSpan(text:"\n   Graph:",style: TextStyle(color:Colors.black,fontWeight: FontWeight.bold)),
+                        TextSpan(text:" Wikipedia",style: TextStyle(color:Colors.black)),
+                        TextSpan(text:"\n\n**If this app is showing \"No Internet Connection\" despite of having connection in your phone,Then this app will be useless,Uninstall it",style: TextStyle(color:Colors.black,fontWeight: FontWeight.bold)),
+                      ]
+                    ))
+              /* Text("""This is a temprory app for tracking the current status of disease Covid-19 in India and World.\n\n* This app has been built using web scraping.\n\nThe following source is Used:
+                    \nWorld Data:
+                    \'worldometers.info/coronavirus\'
+                    India Data: mohfw.gov.in\n\n""")*/,
+                  ));
+                }) ),]))
       ],
     ));
   }

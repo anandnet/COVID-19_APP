@@ -36,15 +36,17 @@ class _IndiaCasesState extends State<IndiaCases> {
       print(table.length);
       table.forEach((tr) {
         List children=tr.children;
+        print(children.length);
+        if(children.length==5){
         temp.add(StateCases(
             stateName: children[1].text,
             totalCases: children[2].text.trim(),
-            totalDeaths: children[4].text.trim(),
+            totalDeaths: children[0].text.trim(),
             totalRecovered: children[3].text.trim(),
            ));
+        }
       });
       temp.sort((a,b)=>int.tryParse(b.totalCases.replaceAll(",", "")).compareTo(int.tryParse(a.totalCases.replaceAll(",", ""))));
-      print(temp[1].stateName);
       
     }
     }

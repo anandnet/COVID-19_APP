@@ -37,9 +37,14 @@ class _SplashScreenState extends State<SplashScreen> {
               Container(
                 height: mq.size.height * .24,
                 child: Center(
-                  child: Text(
-                    "GeoCam",
-                    style: TextStyle(fontSize: 45, color: Colors.grey),
+                  child: RichText(
+                    text: TextSpan(
+                      children:[
+                        TextSpan(text:"COVID-19",style: TextStyle(fontSize: 45, color: Colors.grey),),
+                        TextSpan(text:"Tracker",style: TextStyle(fontSize: 18, color: Colors.grey),), 
+                      ]
+                    ),
+                    //style: TextStyle(fontSize: 45, color: Colors.grey),
                   ),
                 ),
               ),
