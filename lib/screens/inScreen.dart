@@ -41,7 +41,7 @@ class _IndiaCasesState extends State<IndiaCases> {
         temp.add(StateCases(
             stateName: children[1].text,
             totalCases: children[2].text.trim(),
-            totalDeaths: children[0].text.trim(),
+            totalDeaths: children[4].text.trim(),
             totalRecovered: children[3].text.trim(),
            ));
         }
