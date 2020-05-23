@@ -33,16 +33,16 @@ class _PostersScreenState extends State<PostersScreen> {
             .getElementsByClassName("mw-graph-img")[1]
             .attributes['src'];
         cumulative =document
-            .getElementsByClassName("mw-graph-img")[2]
-            .attributes['src'];
-        newcasesperday =document
-            .getElementsByClassName("mw-graph-img")[3]
-            .attributes['src'];
-        recoveriesperday =document
             .getElementsByClassName("mw-graph-img")[4]
             .attributes['src'];
+        newcasesperday =document
+            .getElementsByClassName("mw-graph-img")[6]
+            .attributes['src'];
+        recoveriesperday =document
+            .getElementsByClassName("mw-graph-img")[7]
+            .attributes['src'];
         newdeathsperday =document
-            .getElementsByClassName("mw-graph-img")[5]
+            .getElementsByClassName("mw-graph-img")[8]
             .attributes['src'];
         spinner = false;
       });
@@ -99,11 +99,11 @@ class _PostersScreenState extends State<PostersScreen> {
                         ),
                       ),
                       spinner?Center(child: CircularProgressIndicator(),):_listItem("Cumulative Graph", "https://en.wikipedia.org"+cumulative),
-                      spinner?Center(child: CircularProgressIndicator(),):_listItem("New cases per day", "https://en.wikipedia.org"+newcasesperday),
-                      spinner?Center(child: CircularProgressIndicator(),):_listItem("Deaths", "https://en.wikipedia.org"+newdeathsperday),
-                      spinner?Center(child: CircularProgressIndicator(),):_listItem("Recoveries per day", "https://en.wikipedia.org"+recoveriesperday),
-                      spinner?Center(child: CircularProgressIndicator(),):_listItem("new test per day", "https://en.wikipedia.org"+newtest),
-                      spinner?Center(child: CircularProgressIndicator(),):_listItem("Tested sample per day", "https://en.wikipedia.org"+testedSample),
+                      spinner?Center(child: SizedBox(),):_listItem("New cases per day", "https://en.wikipedia.org"+newcasesperday),
+                      spinner?Center(child: SizedBox(),):_listItem("Deaths", "https://en.wikipedia.org"+newdeathsperday),
+                      spinner?Center(child: SizedBox(),):_listItem("Recoveries per day", "https://en.wikipedia.org"+recoveriesperday),
+                      spinner?Center(child: SizedBox(),):_listItem("New test per day", "https://en.wikipedia.org"+newtest),
+                      spinner?Center(child: SizedBox(),):_listItem("Tested sample per day", "https://en.wikipedia.org"+testedSample),
                       Container(
                         margin: EdgeInsets.only(top: 30),
                         padding: EdgeInsets.only(left: 20),

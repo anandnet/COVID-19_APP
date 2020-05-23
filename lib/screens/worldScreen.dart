@@ -33,20 +33,20 @@ class _WorldScreenState extends State<WorldScreen> {
             .children;
         table.forEach((tr) {
           var children = tr.children;
-          if (!(children[0].text.trim() == "South America" ||
-              children[0].text.trim() == "North America" ||
-              children[0].text.trim() == "Asia" ||
-              children[0].text.trim() == "Europe"||
-              children[0].text.trim() == "Africa")){
+          if (!(children[1].text.trim() == "South America" ||
+              children[1].text.trim() == "North America" ||
+              children[1].text.trim() == "Asia" ||
+              children[1].text.trim() == "Europe"||
+              children[1].text.trim() == "Africa")){
             temp.add(CountryCases(
-                countryName: children[0].text,
-                totalCases: children[1].text.trim(),
-                newCases: children[2].text.trim(),
-                totalDeaths: children[3].text.trim(),
-                newDeaths: children[4].text.trim(),
-                totalRecovered: children[5].text.trim(),
-                activeCases: children[6].text.trim(),
-                seriousCases: children[7].text.trim()));
+                countryName: children[1].text,
+                totalCases: children[2].text.trim(),
+                newCases: children[3].text.trim(),
+                totalDeaths: children[4].text.trim(),
+                newDeaths: children[5].text.trim(),
+                totalRecovered: children[6].text.trim(),
+                activeCases: children[7].text.trim(),
+                seriousCases: children[8].text.trim()));
               }
               else{
                 print("yess");
